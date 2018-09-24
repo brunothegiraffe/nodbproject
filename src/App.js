@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './reset.css'
 import './App.css';
 import axios from 'axios';
 import Game from './Components/Game';
@@ -18,6 +19,7 @@ class App extends Component {
     this.handleRandom = this.handleRandom.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.addToOwned = this.addToOwned.bind(this)
+    this.removeOwned = this.removeOwned.bind(this)
   }
 
   componentDidMount(){
@@ -74,6 +76,18 @@ class App extends Component {
       console.log(err);
     })
   }
+  removeOwned(e, game){
+    e.preventDefault();
+    return axios.delete(`/api/removeFromOnwed`, game)
+    .then(response => {
+      this.setState({
+        gamesOwned: response.data
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 
   render(){
     const games = this.state.searchResults.map((game, id) => (
@@ -87,16 +101,39 @@ class App extends Component {
 
     ))
     return(
-      
       <div className = 'App'>
-        <button onClick = {this.handleRandom}>Get a Random Game</button>
+      <header className='header'>
+      <p className='app_title'>Search for a Game</p>
+      </header>
+      <div className='search'>
+      <button
+        className = 'search_info' 
+        onClick = {this.handleRandom}>
+        Get a Random Game
+        </button>
         {/* {games} */}
-        <input onChange={this.handleChange} name="query" type='text' value={this.state.query} />
+        <input
+        className = 'search_info' 
+        onChange={this.handleChange} 
+        name="query" 
+        type='text' 
+        value={this.state.query} />
         <button
-          type='submit'
-          onClick={(e) => this.handleSearch(e, this.state.query)}>Search</button>
-        {games}
-        <Owned ownedList={this.state.gamesOwned} />
+        className = 'search_info'
+        type='submit'
+        onClick={(e) => this.handleSearch(e, this.state.query)}>
+        Search
+        </button>
+
+          {games}   
+        
+        <Owned 
+        ownedList={this.state.gamesOwned} 
+        removeOwned={this.state.gamesOwned}
+        />
+      </div>
+
+
       </div>
     )
   }

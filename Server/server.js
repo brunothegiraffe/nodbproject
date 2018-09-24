@@ -10,13 +10,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 let owned = [];
-let wishList = [];
+
 
 app.get('/api/igdb/games/:id', apiController.getIgdbGame)
 app.get('/api/gb/games/:id', apiController.getGbGame)
 app.get('/api/gb/search', apiController.searchGb)
 app.get('/api/ownedList', apiController.getOwned)
 app.post('/api/ownedList', apiController.addOwned)
+app.delete('/api/removeFromOnwed/:id', apiController.removeFromOwned)
 
 const port = 4001;
 app.listen(port, console.log(`listening on port: ${port}`))

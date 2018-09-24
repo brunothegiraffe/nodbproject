@@ -76,6 +76,11 @@ module.exports = {
         console.log(`Adding new game to list: ${req.body.id}`);
         res.status(201).send(ownedGames);
         
+    },
+    removeFromOwned: (req, res) =>{
+        ownedGames.splice(ownedGames[id], 1)
+        console.log(`Deleting item from owned games: ${req.body.id}`);
+        res.status(200).send(ownedGames)
     }
 
 

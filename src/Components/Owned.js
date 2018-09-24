@@ -7,17 +7,21 @@ export default class Owned extends Component {
             <div className='owned_games'>
                 <ul className="owned_game_list">
                     {this.props.ownedList.map((game, i) => (
-                        <li
-                            key={i}>
-                            <img className="game_image" src={game.image.small_url} alt="" />
-                            {game.name}
+                        <div className='owned_list_items'>
+                                {game.name}
+                                <img
+                                className="game_image"
+                                src={game.image.small_url}
+                                alt=""
+                            />
                             <button
+                                className='remove_from_owned'
                                 type="submit"
-                                // onClick={this.props.removeOwned()} 
-                                >
+                            // onClick={this.props.removeOwned()} 
+                            >
                                 Remove from Owned
                             </button>
-                        </li>
+                        </div>
                     ))}
                 </ul>
             </div>

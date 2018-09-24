@@ -124,13 +124,17 @@ class App extends Component {
         onClick={(e) => this.handleSearch(e, this.state.query)}>
         Search
         </button>
+        <h1>Results</h1>
+          <div className='displayed_games'>
+          {games}  
+          </div>
+          <hr></hr>
+          <div className='owned_list'>
+            <Owned
+              ownedList={this.state.gamesOwned}
+            />
+          </div>   
 
-          {games}   
-        
-        <Owned 
-        ownedList={this.state.gamesOwned} 
-        removeOwned={this.state.gamesOwned}
-        />
       </div>
 
 

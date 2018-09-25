@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './reset.css'
 import './App.css';
 import axios from 'axios';
-import Game from './Components/Game';
-import Owned from './Components/Owned';
+import Game from './components/Game';
+import Owned from './components/Owned';
 
 class App extends Component {
   constructor(){
@@ -14,53 +14,60 @@ class App extends Component {
       gamesOwned: [],
       searchResults: [],
       query: '',
+      name: ''
     }
 
-    this.handleRandom = this.handleRandom.bind(this)
+    // this.handleRandom = this.handleRandom.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.addToOwned = this.addToOwned.bind(this)
     this.removeOwned = this.removeOwned.bind(this)
+    this.nameChange = this.nameChange.bind(this)
+    this.updateName = this.updateName.bind(this)
   }
 
   componentDidMount(){
-    this.handleRandom();
+    axios.get('/api/ownedList')
+    .then(response => this.setState({
+      gamesOwned: response.data
+    }))
+    .catch(err => console.log(err))
   }
-
-  handleRandom(event){
-    let randomNum = Math.floor(Math.random() * 20000)
-
-    axios.get(`/api/gb/games/${randomNum}`)
-    .then(res => {
-
-      this.setState({
-        gamesToDisplay: res.data,
-      })
-      return console.log(res.data);
+    
+    // handleRandom(event){
+    //   let randomNum = Math.floor(Math.random() * 20000)
       
-    })
-    .catch(err => {
-      return console.log('Not getting data', err);
+    //   axios.get(`/api/gb/games/${randomNum}`)
+    //   .then(res => {
+        
+    //     this.setState({
+    //     gamesToDisplay: res.data,
+    //   })
+    //   return console.log(res.data);
       
-    })
-  }
+    // })
+  //   .catch(err => {
+  //     return console.log('Not getting data', err);
+      
+  //   })
+  // }
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   handleSearch(e, query) {
     e.preventDefault();
-    let search = this.state.query;
-    console.log(`Searching: ${search}`);
-    return axios.get(`/api/gb/search`, {params: { query: search }})
-      .then(response => {
-        console.log(response.data);
-        this.setState({
-          searchResults: response.data
-        })
+    // let search = this.state.query;
+    console.log(`Searching: ${query}`);
+    return axios.get(`/api/gb?search=${query}`)
+    .then(response => {
+      console.log(response.data);
+      this.setState({
+        searchResults: response.data
       })
-      .catch(err => {
-        return console.log('Not getting data', err);
-      })
-
+    })
+    .catch(err => {
+      return console.log('Not getting data', err);
+    })
+    
   }
   addToOwned(e, game){
     console.log(game);
@@ -76,9 +83,11 @@ class App extends Component {
       console.log(err);
     })
   }
-  removeOwned(e, game){
-    e.preventDefault();
-    return axios.delete(`/api/removeFromOnwed`, game)
+  removeOwned(id){
+    // e.preventDefault();
+    console.log(id);
+    
+    return axios.delete(`/api/removeFromOwned/${id}`)
     .then(response => {
       this.setState({
         gamesOwned: response.data
@@ -86,6 +95,23 @@ class App extends Component {
     })
     .catch(err => {
       console.log(err);
+    })
+  }
+  nameChange(id){
+    const {name} = this.state
+    console.log(id, name);
+    
+    return axios.put(`/api/changeName/${id}`, {name})
+    .then(response => this.setState({
+      gamesOwned: response.data
+    }))
+    .catch(err => {
+      console.log(err);
+    })
+  }
+  updateName(e){
+    this.setState({
+      name: e.target.value
     })
   }
 
@@ -96,48 +122,48 @@ class App extends Component {
         key={id}
         index={id}
         addToOwned={this.addToOwned}
-
         />
 
     ))
     return(
-      <div className = 'App'>
-      <header className='header'>
-      <p className='app_title'>Search for a Game</p>
-      </header>
-      <div className='search'>
-      <button
-        className = 'search_info' 
-        onClick = {this.handleRandom}>
-        Get a Random Game
+      <div className='App'>
+        <header className='header'>
+          <p className='app_title'>Search for a Game</p>
+        </header>
+        <div className='search'>
+          {/* <button
+            className='search_info'
+            onClick={this.handleRandom}>
+            Get a Random Game
+        </button> */}
+          {/* {games} */}
+          <input
+            className='search_info'
+            onChange={this.handleChange}
+            name="query"
+            type='text'
+            value={this.state.query} />
+          <button
+            className='search_info'
+            type='submit'
+            onClick={(e) => this.handleSearch(e, this.state.query)}>
+            Search
         </button>
-        {/* {games} */}
-        <input
-        className = 'search_info' 
-        onChange={this.handleChange} 
-        name="query" 
-        type='text' 
-        value={this.state.query} />
-        <button
-        className = 'search_info'
-        type='submit'
-        onClick={(e) => this.handleSearch(e, this.state.query)}>
-        Search
-        </button>
-        <h1>Results</h1>
+          <h1>Results</h1>
           <div className='displayed_games'>
-          {games}  
+            {games}
           </div>
           <hr></hr>
-          <div className='owned_list'>
+            <h1>Owned Games</h1>
+          <div className='owned_games_list'>
             <Owned
               ownedList={this.state.gamesOwned}
+              removeOwned={this.removeOwned}
+              nameChange={this.nameChange}
+              updateName={this.updateName}
             />
-          </div>   
-
-      </div>
-
-
+          </div>
+        </div>
       </div>
     )
   }

@@ -28,14 +28,9 @@ h1{
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-
 }
-/* .game_cards{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-} */
 .game_card{
+  margin: 20px 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -45,6 +40,7 @@ h1{
   background-color: #7a7474;
   margin: 5px;
   border-radius: 10%;
+  box-shadow: 1em 0.5em 1em black;
 }
 .game_image{
   align-self: center;
@@ -54,22 +50,36 @@ h1{
   align-self: center;
   width: 100px;
 }
-.owned_list{
+.owned_game_list{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 .owned_list_items{
+  margin: 20px 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-content: center;
   width: 250px;
-  height: 250px;
+  height: 310px;
   background-color: #7a7474;
   margin: 5px;
   border-radius: 10%;
+  box-shadow: 1em 0.5em 1em black;
+}
+.change_id{
+  width: 100px;
+  align-self: center;
+}
+.change_name{
+  width: 120px;
+  align-self: center;
+}
+.name_update_btn{
+  width: 100px;
+  align-self: center;
 }
 .remove_from_owned{
   align-self: center;

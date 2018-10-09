@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import './reset.css'
 import './App.css';
 import axios from 'axios';
+// import { HashRouter } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+// import Routes from './Routes'
 import Game from './components/Game';
 import Owned from './components/Owned';
+import Button from './components/Button';
 
 class App extends Component {
   constructor(){
@@ -32,24 +36,7 @@ class App extends Component {
     }))
     .catch(err => console.log(err))
   }
-    
-    // handleRandom(event){
-    //   let randomNum = Math.floor(Math.random() * 20000)
-      
-    //   axios.get(`/api/gb/games/${randomNum}`)
-    //   .then(res => {
-        
-    //     this.setState({
-    //     gamesToDisplay: res.data,
-    //   })
-    //   return console.log(res.data);
-      
-    // })
-  //   .catch(err => {
-  //     return console.log('Not getting data', err);
-      
-  //   })
-  // }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -118,7 +105,7 @@ class App extends Component {
   render(){
     const games = this.state.searchResults.map((game, id) => (
         <Game
-        {...game} 
+        {...game}
         key={id}
         index={id}
         addToOwned={this.addToOwned}
@@ -130,6 +117,7 @@ class App extends Component {
         <header className='header'>
           <p className='app_title'>Search for a Game</p>
         </header>
+        <Button />
         <div className='search'>
           {/* <button
             className='search_info'
@@ -154,14 +142,14 @@ class App extends Component {
             {games}
           </div>
           <hr></hr>
-            <h1>Owned Games</h1>
+              <button>Owned Games</button>
           <div className='owned_games_list'>
-            <Owned
+              <Owned
               ownedList={this.state.gamesOwned}
               removeOwned={this.removeOwned}
               nameChange={this.nameChange}
               updateName={this.updateName}
-            />
+              />
           </div>
         </div>
       </div>

@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 
 export default class Owned extends Component {
+    constructor(){
+        super()
+        
+        this.state = {
+            gamesOwned: []
+        }
+    }
 
     render(props) {
 
